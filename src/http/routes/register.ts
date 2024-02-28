@@ -8,9 +8,10 @@ export async function register(app: FastifyInstance) {
       username: z.string(),
       password: z.string(),
       type: z.enum(["ADMINISTRADOR", "PESQUISADOR", "COORDENADOR"]),
+      email: z.optional(z.string()),
     })
 
-    const { username, password, type } = registerBody.parse(request.body)
+    const { username, password, type, email } = registerBody.parse(request.body)
 
     const user = await prisma.user
       .create({
@@ -18,6 +19,7 @@ export async function register(app: FastifyInstance) {
           username,
           password,
           type,
+          email,
         },
       })
       .catch((err) => {
@@ -28,8 +30,14 @@ export async function register(app: FastifyInstance) {
       return reply.status(409).send({ message: "O usuário já existe!" })
     }
 
-    return reply
-      .status(201)
-      .send({ message: "Usuário criado com sucesso", user })
+    return reply.status(201).send({
+      message: "Usuário criado com sucesso",
+      user: {
+        id: user.id,
+        username: user.username,
+        type: user.type,
+        email: user.email,
+      },
+    })
   })
 }

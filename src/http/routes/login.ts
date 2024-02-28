@@ -25,12 +25,17 @@ export async function login(app: FastifyInstance) {
     const token = app.jwt.sign(
       {
         username: user.username,
+        type: user.type,
       },
       {
         sub: user.id,
         expiresIn: "30d",
       }
     )
+
+    if (request.cookies.token) {
+      reply.clearCookie("token")
+    }
 
     reply.setCookie("token", token, {
       path: "/",
@@ -40,6 +45,14 @@ export async function login(app: FastifyInstance) {
       sameSite: true,
     })
 
-    return reply.status(200).send({ message: "Login realizado com sucesso!" })
+    return reply.status(200).send({
+      message: "Login realizado com sucesso!",
+      code: "AUTHORIZED",
+      user: {
+        id: user.id,
+        username: user.username,
+        type: user.type,
+      },
+    })
   })
 }
