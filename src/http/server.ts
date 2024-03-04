@@ -28,6 +28,6 @@ app.register(login)
 app.register(register)
 app.register(deleteUser)
 
-app.listen({ port: 3333 }).then(() => {
+app.listen({ port: 10000, host: "0.0.0.0" }).then(() => {
   console.log("HTTP Server is running!")
 })
