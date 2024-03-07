@@ -33,9 +33,7 @@ export async function login(app: FastifyInstance) {
       }
     )
 
-    if (request.cookies.token) {
-      reply.clearCookie("token")
-    }
+    console.log(token)
 
     reply.setCookie("token", token, {
       path: "/",

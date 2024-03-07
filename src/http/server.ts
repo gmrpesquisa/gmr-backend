@@ -5,6 +5,8 @@ import fastifyJWT from "@fastify/jwt"
 import fastifyCookie from "@fastify/cookie"
 import fastifyCors from "@fastify/cors"
 import { deleteUser } from "./User/delete-user"
+import env from "../../env"
+import { getUser } from "./User/get-user"
 
 const app = fastify()
 
@@ -13,10 +15,10 @@ app.register(fastifyCors, {
   credentials: true,
 })
 app.register(fastifyJWT, {
-  secret: process.env.SECRET || "secret",
+  secret: env.SECRET,
 })
 app.register(fastifyCookie, {
-  secret: process.env.SECRET || "secret",
+  secret: env.SECRET,
   hook: "onRequest",
 })
 
@@ -27,7 +29,8 @@ app.get("/", (request, reply) => {
 app.register(login)
 app.register(register)
 app.register(deleteUser)
+app.register(getUser)
 
-app.listen({ port: 10000, host: "0.0.0.0" }).then(() => {
+app.listen({ port: env.PORT, host: "0.0.0.0" }).then(() => {
   console.log("HTTP Server is running!")
 })
