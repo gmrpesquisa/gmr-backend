@@ -4,6 +4,24 @@ import { prisma } from "../../lib/prisma"
 
 export async function register(app: FastifyInstance) {
   app.post("/register", async (request, reply) => {
+    const { token } = request.cookies
+
+    if (!token) {
+      return reply.status(401).send({ message: "Token inválido" })
+    }
+
+    const decryptedToken: any = app.jwt.verify(token)
+
+    if (!decryptedToken) {
+      return reply.status(401).send({ message: "Token Inválido" })
+    }
+
+    if (decryptedToken?.type !== "ADMINISTRADOR") {
+      return reply
+        .status(401)
+        .send({ message: "Você não tem permissão para registrar usuários." })
+    }
+
     const registerBody = z.object({
       username: z.string(),
       password: z.string(),

@@ -1,10 +1,10 @@
 import fastify from "fastify"
-import { login } from "./routes/login"
-import { register } from "./routes/register"
+import { login } from "./routes/Auth/login"
+import { register } from "./User/register"
 import fastifyJWT from "@fastify/jwt"
 import fastifyCookie from "@fastify/cookie"
 import fastifyCors from "@fastify/cors"
-import { deleteUser } from "./routes/delete-user"
+import { deleteUser } from "./User/delete-user"
 
 const app = fastify()
 

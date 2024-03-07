@@ -35,7 +35,7 @@ export async function deleteUser(app: FastifyInstance) {
           id,
         },
       })
-      .catch((err: any) => {
+      .catch(() => {
         return reply.status(401).send({ message: "Credenciais inválidas!" })
       })
 
