@@ -33,14 +33,10 @@ export async function login(app: FastifyInstance) {
       }
     )
 
-    console.log(token)
-
     reply.setCookie("token", token, {
       path: "/",
       maxAge: 60 * 60 * 24 * 30,
       httpOnly: true,
-      secure: true,
-      sameSite: true,
     })
 
     return reply.status(200).send({
